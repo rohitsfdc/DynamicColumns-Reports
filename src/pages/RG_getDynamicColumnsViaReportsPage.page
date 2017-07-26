@@ -1,0 +1,37 @@
+<apex:page controller="RG_getDynamicColumnsViaReports" sidebar="false">
+    <apex:includeScript value="{!URLFOR($Resource.dataTable, 'js/jquery.js')}"/>
+	<apex:includeScript value="{!URLFOR($Resource.dataTable, 'js/jquery.dataTables.min.js')}"/>
+	<apex:stylesheet value="{!URLFOR($Resource.dataTable, 'css/jquery.dataTables.css')}"/>
+    <apex:form >
+        
+        <apex:pageBlock >
+           
+            <table id="outtable" class="reportResults">
+           <thead>
+               <apex:repeat value="{!reportResults.reportMetadata.detailColumns}" var="colName">
+                   <th><apex:outputText value="{!reportResults.reportExtendedMetadata.detailColumnInfo[colName].label}"/></th>
+               </apex:repeat>
+           </thead>
+
+           <tbody>
+               <apex:repeat value="{!reportResults.factMap['T!T'].rows}" var="row">
+                   <tr>
+                       <apex:repeat value="{!row.dataCells}" var="cell">
+                           <td><apex:outputText value="{!cell.label}"/></td>
+                       </apex:repeat>
+                   </tr>
+               </apex:repeat>
+           </tbody>
+         </table>
+        </apex:pageBlock>
+    </apex:form>
+<script>
+    //to make the table UI look nice, i am using datatables.js
+    j$ = jQuery.noConflict();
+            j$(document).ready( function () {
+                var outTable = j$('[id$="outtable"]').DataTable({
+                    
+                });
+            });
+</script>
+</apex:page>
